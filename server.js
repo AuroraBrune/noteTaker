@@ -4,18 +4,19 @@ const fs = require('fs');
 const uuid = require('uuid');
 const path = require('path');
 
-const PORT = process.envPORT || 8080;
 
 const app = express();
 
-//
+// parse application/urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
+ 
+// require('./app/routing/api-routes.js')(app);
+require('./routing/html-routes.js')(app);
 
-
-
-
-
-
-
+const PORT = process.envPORT || 8080;
 
 
 
