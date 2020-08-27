@@ -11,8 +11,11 @@ const bodyParser = require('body-parser');
 
 module.exports = function (app) {
     app.get('/api/notes', function (req, res) {
-       let notesData = fs.readFileSync("db/db.json", "utf8");
-        res.json(notesData);
+        let notesData = fs.readFileSync("db/db.json", "utf8");
+        let jsonData = JSON.parse(notesData);
+        console.log(jsonData);
+        res.json(jsonData);
+
     });
 
     app.post('/api/notes', function (req, res) {
@@ -33,7 +36,7 @@ module.exports = function (app) {
         // use fs to write
         fs.writeFileSync("db/db.json", notesData)
         // if these were large files... such as images or mp4s then probably should use async version of fs
-        res.json(notesData);
+        return res.json(notesData);
     });
 
     app.delete('/api/notes/:id', function (req, res) {
@@ -44,13 +47,14 @@ module.exports = function (app) {
         //parse the data
         obj = JSON.parse(notesData);
         //delete the note that matches the id user selects to delete
-        notesData = notesData.push.filter(function (notes) {
-           return  notesData.id != req.params.id;
+        notesData = obj.filter(function (notes) {
+            return notes.id != req.params.id;
         })
         //stringify notesData to re-write file without the deleted note
         notesData = JSON.stringify(obj);
         fs.writeFileSync("db/db.json", notesData);
-         res.json(notesData);
+        obj = JSON.parse(notesData);
+        res.json(obj);
 
     });
 }
