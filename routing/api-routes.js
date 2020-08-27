@@ -11,25 +11,13 @@ const bodyParser = require('body-parser');
 
 module.exports = function (app) {
     app.get('/api/notes', function (req, res) {
-        notesData = fs.readFileSync("db/db.json", "utf8");
+       let notesData = fs.readFileSync("db/db.json", "utf8");
         res.json(notesData);
     });
-   
-
-    // app.post("/api/notes", function(req, res) {
-    //     let savedNotes = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
-    //     let newNote = req.body;
-    //     newNote.id = uuid.v4(),
-    //     savedNotes.push(newNote);
-    //     fs.writeFileSync("db/db.json", JSON.stringify(savedNotes));
-    //     console.log("Note saved to db.json. Content: ", newNote);
-    //     res.json(savedNotes);
-    // })
-
 
     app.post('/api/notes', function (req, res) {
 
-        const newNote = {
+        let newNote = {
             id: uuid.v4(),
             title: req.body.title,
             text: req.body.text
