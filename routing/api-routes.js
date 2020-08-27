@@ -12,12 +12,24 @@ const bodyParser = require('body-parser');
 module.exports = function (app) {
     app.get('/api/notes', function (req, res) {
         notesData = fs.readFileSync("db/db.json", "utf8");
-       return res.json(notesData);
+        res.json(notesData);
     });
+   
+
+    // app.post("/api/notes", function(req, res) {
+    //     let savedNotes = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
+    //     let newNote = req.body;
+    //     newNote.id = uuid.v4(),
+    //     savedNotes.push(newNote);
+    //     fs.writeFileSync("db/db.json", JSON.stringify(savedNotes));
+    //     console.log("Note saved to db.json. Content: ", newNote);
+    //     res.json(savedNotes);
+    // })
+
 
     app.post('/api/notes', function (req, res) {
 
-        const activeNote = {
+        const newNote = {
             id: uuid.v4(),
             title: req.body.title,
             text: req.body.text
@@ -27,13 +39,13 @@ module.exports = function (app) {
         // convert to back to obj (parse)
         obj = JSON.parse(notesData);
         // push new data to obj
-        obj.push(activeNote);
+        obj.push(newNote);
         // convert back to file 
         notesData = JSON.stringify(obj);
         // use fs to write
         fs.writeFileSync("db/db.json", notesData)
         // if these were large files... such as images or mp4s then probably should use async version of fs
-        return res.json(notesData);
+        res.json(notesData);
     });
 
     app.delete('/api/notes/:id', function (req, res) {
@@ -45,12 +57,12 @@ module.exports = function (app) {
         obj = JSON.parse(notesData);
         //delete the note that matches the id user selects to delete
         notesData = notesData.push.filter(function (notes) {
-            return notesData.id != req.params.id;
+           return  notesData.id != req.params.id;
         })
         //stringify notesData to re-write file without the deleted note
         notesData = JSON.stringify(obj);
         fs.writeFileSync("db/db.json", notesData);
-        return res.json(notesData);
+         res.json(notesData);
 
     });
 }
