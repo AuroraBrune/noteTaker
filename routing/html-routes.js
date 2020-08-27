@@ -7,6 +7,7 @@ module.exports = function(app) {
     //when the user hits the route /notes, we want our server to serve them notes.html
     app.get('/notes', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/notes.html'));
+        console.log(__dirname);
     });
     //when the user hits the route /index, we want our server to serve them index.html
     app.get('*', function (req, res) {
