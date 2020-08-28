@@ -45,16 +45,16 @@ module.exports = function (app) {
         //read the json file
         notesData = fs.readFileSync("db/db.json", "utf8")
         //parse the data
-        obj = JSON.parse(notesData);
+        notesData = JSON.parse(notesData);
         //delete the note that matches the id user selects to delete
-        notesData = obj.filter(function (notes) {
+        notesData = notesData.filter(function (notes) {
             return notes.id != req.params.id;
         })
         //stringify notesData to re-write file without the deleted note
-        notesData = JSON.stringify(obj);
+        notesData = JSON.stringify(notesData);
         fs.writeFileSync("db/db.json", notesData);
-        obj = JSON.parse(notesData);
-        res.json(obj);
+        notesData = JSON.parse(notesData);
+        res.send(notesData);
 
     });
 }
