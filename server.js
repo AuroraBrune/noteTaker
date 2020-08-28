@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, "public")));
 require('./routing/api-routes.js')(app);
 require('./routing/html-routes.js')(app);
 
-const PORT = process.envPORT || 8080;
+const PORT = process.envPORT || 3001;
 
 
 
